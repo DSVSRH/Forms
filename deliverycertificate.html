@@ -131,7 +131,13 @@ body { font-family: 'Roboto Slab', serif; background-color: #f1f5f9; padding: 10
                 <input type="date" onchange="formatDate(this, 'deliveryDate_1009')">
                 <i class="fas fa-calendar-alt ml-2 text-blue-900 cursor-pointer"></i>
             </span>.
-            THIS IS HER <select id="deliveryOrder_1010" class="line-input w-16 text-blue-900"><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option></select>
+            TIME IS 
+			<input
+    type="time"
+    id="deliveryTime"
+    class="line-input"
+>
+THIS IS HER <select id="deliveryOrder_1010" class="line-input w-16 text-blue-900"><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option></select>
             DELIVERY, AND THE BORN CHILD IS ALIVE <select id="childGender_1011" class="line-input w-24 text-blue-900"><option>MALE</option><option>FEMALE</option></select>.
         </p>
     </div>
@@ -180,14 +186,14 @@ body { font-family: 'Roboto Slab', serif; background-color: #f1f5f9; padding: 10
 
 <script>
 
-const URL = "https://script.google.com/macros/s/AKfycbzoWUfBI_wS1AW-VhdgQG9Gn2VHU0iuNQpfCsvfdtsa76H-auqazLiBt-lGNFgzt4SEKA/exec";
+const URL = "https://script.google.com/macros/s/AKfycbyKDMSjYKy5DGZBbpVzcqrXZVyeejnlxcrtNEx_L85qQO6J-HjavRLf3mUhFVTqEPcm/exec";
 function saveFormData() {
 
     const formData = {
         certNo: localStorage.getItem('vsr_cert') || '',
         receiptDate: document.getElementById('receiptDate_8471').value,
         deliveryDate: document.getElementById('deliveryDate_1009').value,
-
+deliveryTime: document.getElementById('deliveryTime').value,
         motherName: document.getElementById('smtName_1004').innerText,
         fatherName: document.getElementById('sriName_1005').innerText,
         village: document.getElementById('nativePlace_1006').innerText,
@@ -209,7 +215,7 @@ function loadFormData() {
 
     document.getElementById('receiptDate_8471').value = data.receiptDate || '';
     document.getElementById('deliveryDate_1009').value = data.deliveryDate || '';
-
+document.getElementById('deliveryTime').value = data.deliveryTime || '';
     document.getElementById('smtName_1004').innerText = data.motherName || '';
     document.getElementById('sriName_1005').innerText = data.fatherName || '';
     document.getElementById('nativePlace_1006').innerText = data.village || '';
@@ -264,7 +270,7 @@ function doReset() {
 
     document.getElementById('receiptDate_8471').value = '';
     document.getElementById('deliveryDate_1009').value = '';
-
+document.getElementById('deliveryTime').value = '';
     document.getElementById('smtName_1004').innerText = '';
     document.getElementById('sriName_1005').innerText = '';
     document.getElementById('nativePlace_1006').innerText = '';
@@ -313,6 +319,7 @@ document.getElementById('distName_1008').innerText=d.data['Dist']||'';
 document.getElementById('receiptDate_8471').value=normalizeDate(d.data['Date']);
 
 document.getElementById('deliveryDate_1009').value=normalizeDate(d.data['On Date']);
+document.getElementById('deliveryTime').value =d.data['Time'] || '';
 
 document.getElementById('receiptNumDisplay_9182').innerText=q;
 
@@ -389,30 +396,31 @@ function handleSaveOrUpdate_7182() {
     document.getElementById('saveIcon').className='fa-solid fa-spinner fa-spin';
     document.getElementById('btnText_992').innerText='SAVING';
 
-    const p = {
+const p = {
 
-        certNo: localStorage.getItem('vsr_cert') || "NEW",
+    certNo: localStorage.getItem('vsr_cert') || "NEW",
 
-        date: document.getElementById('receiptDate_8471').value,
+    date: document.getElementById('receiptDate_8471').value,
 
-        motherName: document.getElementById('smtName_1004').innerText,
+    motherName: document.getElementById('smtName_1004').innerText,
 
-        fatherName: document.getElementById('sriName_1005').innerText,
+    fatherName: document.getElementById('sriName_1005').innerText,
 
-        village: document.getElementById('nativePlace_1006').innerText,
+    village: document.getElementById('nativePlace_1006').innerText,
 
-        mandal: document.getElementById('mandalName_1007').innerText,
+    mandal: document.getElementById('mandalName_1007').innerText,
 
-        dist: document.getElementById('distName_1008').innerText,
+    dist: document.getElementById('distName_1008').innerText,
 
-        onDate: document.getElementById('deliveryDate_1009').value,
+    onDate: document.getElementById('deliveryDate_1009').value,
 
-        delivered: document.getElementById('deliveryOrder_1010').value,
+    time: document.getElementById('deliveryTime').value,
 
-        gender: document.getElementById('childGender_1011').value
+    delivered: document.getElementById('deliveryOrder_1010').value,
 
-    };
+    gender: document.getElementById('childGender_1011').value
 
+};
     fetch(URL, {
         method: "POST",
         body: JSON.stringify(p)
